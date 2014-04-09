@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+    h1 Projects list
+
+    -if (projects) {
+        div(class="bs-component")
+            table(class="table table-striped table-hover ")
+                thead
+                    tr
+                        th Projec Name
+                        th Spend Time
+                tbody
+                    each project in projects
+                        tr
+                            td
+                                a(href='/projects/details/#{project._id}') #{project.name}
+                            td #{project.spendTime) h
+    -} else {
+        h3 No projects yet
+    -}
+
+    form(action='/projects/create', method="get")
+        input(type="submit", class="btn btn-primary", value='Create project')

@@ -1,0 +1,23 @@
+//
+   Created by LDV on 08/04/14.
+
+extends ../layout
+
+block content
+
+    div(class="col-lg-6")
+        div(class="well bs-component")
+            form(name='form', class='form-horizontal', method='post', action='/users/create', enctype='multipart/form-data')
+                fieldset
+                    legend New User Info
+                    div(class="form-group")
+                        label(for='Name', class="col-lg-2 control-label") Name
+                        div(class="col-lg-10")
+                            input(type='text', class="form-control", id='name', name='username', placeholder="User Name")
+                    div(class="form-group")
+                    label(for='spendTime', class="col-lg-2 control-label") Password
+                        div(class="col-lg-10")
+                            input(type='password', class="form-control" id='password', name='password', placeholder="Enter password here")
+
+                    div(class="modal-footer")
+                        input(type='submit', class="btn btn-primary", value='Create New User')

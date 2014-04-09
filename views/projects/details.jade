@@ -1,0 +1,33 @@
+//
+   Created by LDV on 28/03/14.
+
+extends ../layout
+block content
+
+    h1 Project Details
+
+    div(class="row")
+        div(class="col-lg-6")
+            p(class='bs-component')
+                form(action='/projects/delete/#{project._id}', method="delete")
+                    input(type="submit", class="btn btn-danger", value='Delete Project')
+
+                form(action='/tasks/create/#{project._id}', method="get")
+                    input(type="submit", class="btn btn-primary", value='Create Task')
+
+
+    h1 Tasks list of #{project.name}
+    if ( (tasks) && (tasks.length > 0) )
+        div(class="bs-component")
+            table(class="table table-striped table-hover ")
+                thead
+                    tr
+                        th Task
+                        th Spend Time
+                tbody
+                    each task in tasks
+                        tr
+                            td= task.name
+                            td= task.spendTime + 'h'
+    else
+        h2 Dont have tasks
