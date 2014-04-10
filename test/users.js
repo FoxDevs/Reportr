@@ -23,6 +23,8 @@ describe('Users Login', function()
         //mongoose.connect(config.get('mongoose:uri'));
         //mongoose.connection.db.dropDatabase();
 
+        ProjectModel.collection.drop();
+        TaskModel.collection.drop();
         UserModel.collection.drop();
 
         var user = new UserModel({
@@ -44,6 +46,8 @@ describe('Users Login', function()
 
     afterEach(function(done) {
 
+        ProjectModel.collection.drop();
+        TaskModel.collection.drop();
         UserModel.collection.drop();
 
         done();

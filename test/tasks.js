@@ -96,53 +96,53 @@ describe('Task CRUD', function()
 
 
     describe('Task creation', function() {
-//        it('Should create task for project', function(done) {
-//
-//            var taskName = 'TestTaskName';
-//            var taskSpendTime = 10;
-//
-//            var body = {
-//                projectID: currentProject._id,
-//                name: taskName,
-//                spendTime: taskSpendTime
-//            };
-//
-//            request(url)
-//                .post('/tasks/create')
-//                .set('cookie', authCookie)
-//                .send(body)
-//                .end(function(err, res) {
-//                    if (err) {
-//                        throw err;
-//                    } else {
-//
-//                        res.should.have.status(302);
-//                        res.text.should.containDeep("/projects/list");
-//
-//                        TaskModel.findOne(body, function(err, task) {
-//                            if (err) {
-//                                throw err;
-//                            } else {
-//                                should.exist(task);
-//
-//
-//                                ProjectModel.findById(task.projectID, function(err, parentProject) {
-//                                    if (err) {
-//                                        throw err;
-//                                    } else {
-//                                        should.exist(parentProject);
-//
-//                                        parentProject.name.should.eql(currentProject.name);
-//                                        parentProject.spendTime.should.eql(taskSpendTime);
-//
-//                                        done();
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                });
-//        });
+        it('Should create task for project', function(done) {
+
+            var taskName = 'TestTaskName';
+            var taskSpendTime = 10;
+
+            var body = {
+                projectID: currentProject._id,
+                name: taskName,
+                spendTime: taskSpendTime
+            };
+
+            request(url)
+                .post('/tasks/create')
+                .set('cookie', authCookie)
+                .send(body)
+                .end(function(err, res) {
+                    if (err) {
+                        throw err;
+                    } else {
+
+                        res.should.have.status(302);
+                        res.text.should.containDeep("/projects/list");
+
+                        TaskModel.findOne(body, function(err, task) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                should.exist(task);
+
+
+                                ProjectModel.findById(task.projectID, function(err, parentProject) {
+                                    if (err) {
+                                        throw err;
+                                    } else {
+                                        should.exist(parentProject);
+
+                                        parentProject.name.should.eql(currentProject.name);
+                                        parentProject.spendTime.should.eql(taskSpendTime);
+
+                                        done();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        });
 
 
         it('Should sum tasks spend time', function(done) {
@@ -184,13 +184,13 @@ describe('Task CRUD', function()
                 // call  to fulfill the promise with that value
                 // call reject(error) if something goes wrong
 
-                var body2 = {
+                var body = {
                     projectID: currentProject._id,
                     name: 'TestTaskName2',
                     spendTime: taskSpendTime2
                 };
 
-                doRequest(body2, resolve, reject);
+                doRequest(body, resolve, reject);
             });
 
             var createTask3Promise = new Promise(function (resolve, reject)
@@ -198,20 +198,18 @@ describe('Task CRUD', function()
                 // call  to fulfill the promise with that value
                 // call reject(error) if something goes wrong
 
-                var body3 = {
+                var body = {
                     projectID: currentProject._id,
                     name: 'TestTaskName3',
                     spendTime: taskSpendTime3
                 };
 
-                doRequest(body3, resolve, reject);
+                doRequest(body, resolve, reject);
             });
 
 
             Promise.all([createTask1Promise, createTask2Promise, createTask3Promise]).done(function (res, err)
             {
-                console.log(err);
-
                 ProjectModel.findById(currentProject._id, function(err, updatedProject) {
                     if (err) {
                         throw err;
@@ -242,83 +240,83 @@ describe('Task CRUD', function()
         });
     });
 
-//    describe('Task deletion', function() {
-//        it('Should delete task for project', function(done) {
-//
-//            var taskName = 'TestTaskName';
-//            var taskSpendTime = 10;
-//
-//            var body = {
-//                projectID: currentProject._id,
-//                name: taskName,
-//                spendTime: taskSpendTime
-//            };
-//
-//            request(url)
-//                .post('/tasks/create')
-//                .set('cookie', authCookie)
-//                .send(body)
-//                .end(function(err, res) {
-//                    if (err) {
-//                        throw err;
-//                    } else {
-//
-//                        res.should.have.status(302);
-//
-//
-//                        TaskModel.findOne(body, function(err, createdTask) {
-//                            if (err) {
-//                                throw err;
-//                            } else {
-//                                should.exist(createdTask);
-//
-//                                ProjectModel.findById(createdTask.projectID, function(err, parentProject) {
-//                                    if (err) {
-//                                        throw err;
-//                                    } else {
-//                                        should.exist(parentProject);
-//
-//                                        parentProject.name.should.eql(currentProject.name);
-//                                        parentProject.spendTime.should.eql(taskSpendTime);
-//
-//
-//                                        request(url)
-//                                            .get('/tasks/delete/'+createdTask._id)
-//                                            .set('cookie', authCookie)
-//                                            .end(function(err, res) {
-//                                                if (err) {
-//                                                    throw err;
-//                                                } else {
-//
-//                                                    res.should.have.status(302);
-//                                                    res.text.should.containDeep("/projects/details");
-//
-//                                                    request(url)
-//                                                        .get('/projects/list')
-//                                                        .set('cookie', authCookie)
-//                                                        .end(function(err, res) {
-//                                                            if (err) {
-//                                                                throw err;
-//                                                            } else {
-//
-//                                                                res.text.should.not.containDeep(taskSpendTime.toString());
-//
-//                                                                var zero = 0;
-//                                                                res.text.should.containDeep(zero.toString());
-//
-//                                                                done();
-//                                                            }
-//                                                        });
-//                                                }
-//                                            });
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                });
-//        });
-//
-//    });
+    describe('Task deletion', function() {
+        it('Should delete task for project', function(done) {
+
+            var taskName = 'TestTaskName';
+            var taskSpendTime = 10;
+
+            var body = {
+                projectID: currentProject._id,
+                name: taskName,
+                spendTime: taskSpendTime
+            };
+
+            request(url)
+                .post('/tasks/create')
+                .set('cookie', authCookie)
+                .send(body)
+                .end(function(err, res) {
+                    if (err) {
+                        throw err;
+                    } else {
+
+                        res.should.have.status(302);
+
+
+                        TaskModel.findOne(body, function(err, createdTask) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                should.exist(createdTask);
+
+                                ProjectModel.findById(createdTask.projectID, function(err, parentProject) {
+                                    if (err) {
+                                        throw err;
+                                    } else {
+                                        should.exist(parentProject);
+
+                                        parentProject.name.should.eql(currentProject.name);
+                                        parentProject.spendTime.should.eql(taskSpendTime);
+
+
+                                        request(url)
+                                            .get('/tasks/delete/'+createdTask._id)
+                                            .set('cookie', authCookie)
+                                            .end(function(err, res) {
+                                                if (err) {
+                                                    throw err;
+                                                } else {
+
+                                                    res.should.have.status(302);
+                                                    res.text.should.containDeep("/projects/details");
+
+                                                    request(url)
+                                                        .get('/projects/list')
+                                                        .set('cookie', authCookie)
+                                                        .end(function(err, res) {
+                                                            if (err) {
+                                                                throw err;
+                                                            } else {
+
+                                                                res.text.should.not.containDeep(taskSpendTime.toString());
+
+                                                                var zero = 0;
+                                                                res.text.should.containDeep(zero.toString());
+
+                                                                done();
+                                                            }
+                                                        });
+                                                }
+                                            });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        });
+
+    });
 });
 
