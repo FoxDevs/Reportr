@@ -59,10 +59,14 @@ app.get('/projects/delete/:id',  ensureAuthenticated, projectsRouter.delete);
 
 app.get('/tasks',            ensureAuthenticated, tasksRouter.list);
 app.get('/tasks/',           ensureAuthenticated, tasksRouter.list);
+app.get('/tasks/calendar',                        tasksRouter.calendar);
 app.get('/tasks/list/:id',   ensureAuthenticated, tasksRouter.list);
 app.get('/tasks/create/:id', ensureAuthenticated, tasksRouter.create);
 app.post('/tasks/create',    ensureAuthenticated, tasksRouter.createTask);
 app.get('/tasks/delete/:id', ensureAuthenticated, tasksRouter.delete);
+
+app.get('/gevemeevents', tasksRouter.returnEvents);
+
 
 app.listen(config.get('port'), function(){
     console.log('Express server listening on port ' + config.get('port'));

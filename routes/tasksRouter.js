@@ -52,8 +52,6 @@ exports.create = function(request, response)
             response.redirect('/projects/list')
         }
     });
-
-
 };
 
 exports.createTask = function(request, response)
@@ -93,7 +91,6 @@ exports.createTask = function(request, response)
             });
         } else {
             console.log(err);
-
         }
     });
 }
@@ -116,12 +113,26 @@ exports.delete = function(req, res) {
             } else {
                 projectsRouter.createProject(req, res);
             }
-
-
         } else {
             console.log('Cant find task with ID: ' + req.params.id);
             res.statusCode = 500;
             res.send({ error: 'Server error' });
         }
     });
+};
+
+exports.calendar = function(req, res) {
+    res.render('tasks/calendar');
+};
+
+exports.returnEvents = function(req, res) {
+
+    var event = {
+        title: "MyTransmitedEvent",
+        start: "2014-04-25"
+    }
+
+    var events = [event];
+
+    res.json(events);
 };
