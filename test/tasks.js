@@ -117,7 +117,7 @@ describe('Task CRUD', function()
                     } else {
 
                         res.should.have.status(302);
-                        res.text.should.containDeep("/projects/list");
+                        res.text.should.containDeep("/projects/details");
 
                         TaskModel.findOne(body, function(err, task) {
                             if (err) {
@@ -318,5 +318,92 @@ describe('Task CRUD', function()
         });
 
     });
+
+    describe('Task editing', function() {
+        it('Should update task', function(done) {
+
+            var oldTaskName = 'OldTaskName';
+            var oldTaskSpendTime = 10;
+
+            var body = {
+                projectID: currentProject._id,
+                name: oldTaskName,
+                spendTime: oldTaskSpendTime
+            };
+
+            request(url)
+                .post('/tasks/create')
+                .set('cookie', authCookie)
+                .send(body)
+                .end(function(err, res) {
+                    if (err) {
+                        throw err;
+                    } else {
+
+                        res.should.have.status(302);
+                        res.text.should.containDeep("/projects/details");
+
+                        TaskModel.findOne(body, function(err, task) {
+                            if (err) {
+                                throw err;
+                            } else {
+                                should.exist(task);
+
+                                var newTaskName = "NEWTaskName";
+                                var newTaskSpendTime = 20;
+
+                                var editedBody = {
+                                    projectID: currentProject._id,
+                                    name:      newTaskName,
+                                    spendTime: newTaskSpendTime,
+                                    taskId:    task._id
+                                }
+
+                                request(url)
+                                    .post('/tasks/edit')
+                                    .set('cookie', authCookie)
+                                    .send(editedBody)
+                                    .end(function(err, res) {
+                                        if (err) {
+                                            throw err;
+                                        } else {
+
+                                            res.should.have.status(302);
+                                            res.text.should.containDeep("/projects/details");
+
+                                            TaskModel.findById(task._id, function(err, task) {
+                                                if (err) {
+                                                    throw err;
+                                                } else {
+                                                    should.exist(task);
+
+                                                    task.name.should.eql(newTaskName);
+                                                    task.spendTime.should.eql(newTaskSpendTime);
+
+
+                                                    ProjectModel.findById(task.projectID, function(err, parentProject) {
+                                                        if (err) {
+                                                            throw err;
+                                                        } else {
+                                                            should.exist(parentProject);
+
+                                                            parentProject.spendTime.should.eql(newTaskSpendTime);
+
+                                                            done();
+                                                        }
+                                                    });
+
+                                                }
+
+                                            });
+                                        }
+                                    });
+                            }
+                        });
+                    }
+                });
+        });
+    });
+
 });
 

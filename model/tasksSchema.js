@@ -7,5 +7,6 @@ var mongoose = require('mongoose');
 exports.TaskSchema = mongoose.Schema({
     projectID: String,
     name:      String,
-    spendTime: Number
+    spendTime: Number,
+    created_at: Date
 });

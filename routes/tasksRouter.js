@@ -2,6 +2,8 @@
  * Created by LDV on 31/03/14.
  */
 
+var dateFormat = require('dateformat');
+
 var projectsRouter = require('./projectsRouter');
 
 var TaskModel = require('../model/mongoose').TaskModel;
@@ -59,7 +61,8 @@ exports.createTask = function(request, response)
     var task = new TaskModel({
         projectID: request.body.projectID,
         name: request.body.name,
-        spendTime: request.body.spendTime
+        spendTime: request.body.spendTime,
+        created_at: Date.now()
     });
 
     task.save(function (err)
@@ -75,7 +78,7 @@ exports.createTask = function(request, response)
                         ProjectModel.findByIdAndUpdate(project._id, {$inc: {spendTime:task.spendTime}}, function (err, updatedProject) {
                             if (err) return console.log(err);
 
-                            response.redirect('projects/list');
+                            response.redirect('projects/details/'+updatedProject._id);
                         });
 
                     } else {
@@ -121,18 +124,95 @@ exports.delete = function(req, res) {
     });
 };
 
-exports.calendar = function(req, res) {
-    res.render('tasks/calendar');
+exports.edit = function(req, res)
+{
+    var taskID = req.params.id;
+
+    TaskModel.findById(taskID, function(err, task)
+    {
+        if (!err)
+        {
+            res.render('tasks/edit', {task: task});
+        } else {
+            console.log('MyError: Cant exports.edit');
+            response.send({ error: 'Server error' });
+        }
+    });
 };
+
+exports.editTask  = function(req, res)
+{
+    var taskID = req.body.taskId;
+
+    TaskModel.findById(taskID, function(err, task)
+    {
+        if (err) throw err;
+
+        var newSpendTime = req.body.spendTime;
+
+        var spendTimeDif = newSpendTime - task.spendTime
+
+        task.name      = req.body.name;
+        task.spendTime = newSpendTime;
+
+        task.save(function (err)
+        {
+            if (err) throw err;
+
+            ProjectModel.findByIdAndUpdate(task.projectID, {$inc: {spendTime:spendTimeDif}}, function (err, updatedProject) {
+                if (err) throw err;
+
+                res.redirect('projects/details/'+task.projectID);
+            });
+        });
+    });
+};
+
+exports.calendar = function(req, res) {
+
+    var projectID = req.params.id;
+
+    res.render('tasks/calendar', {projectID: projectID});
+};
+
+function taskToEvent(task, projectID)
+{
+    var formattedDate = dateFormat(task.created_at, "yyyy-mm-dd");
+
+    var event = {
+        // start: "2014-04-25"
+        title: task.name,
+        start: formattedDate,
+        url: "/projects/details/" + projectID
+    }
+
+    return event;
+}
 
 exports.returnEvents = function(req, res) {
 
-    var event = {
-        title: "MyTransmitedEvent",
-        start: "2014-04-25"
-    }
+    var projectID = req.params.id;
 
-    var events = [event];
+    TaskModel.find({projectID: projectID}, function(err, tasks) {
 
-    res.json(events);
+        if (!err) {
+
+            var events = [];
+
+            for(var taskIndex = 0; taskIndex < tasks.length; taskIndex++)
+            {
+                var task = tasks[taskIndex];
+
+                var event = taskToEvent(task, projectID);
+
+                events.push(event);
+            }
+
+            res.json(events);
+
+        } else {
+            console.log('MyError: Cant find tasks');
+            response.send({ error: 'Server error' });
+        }
+    });
 };

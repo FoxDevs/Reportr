@@ -59,13 +59,15 @@ app.get('/projects/delete/:id',  ensureAuthenticated, projectsRouter.delete);
 
 app.get('/tasks',            ensureAuthenticated, tasksRouter.list);
 app.get('/tasks/',           ensureAuthenticated, tasksRouter.list);
-app.get('/tasks/calendar',                        tasksRouter.calendar);
 app.get('/tasks/list/:id',   ensureAuthenticated, tasksRouter.list);
 app.get('/tasks/create/:id', ensureAuthenticated, tasksRouter.create);
 app.post('/tasks/create',    ensureAuthenticated, tasksRouter.createTask);
 app.get('/tasks/delete/:id', ensureAuthenticated, tasksRouter.delete);
+app.get('/tasks/edit/:id', tasksRouter.edit);
+app.post('/tasks/edit', tasksRouter.editTask);
 
-app.get('/gevemeevents', tasksRouter.returnEvents);
+app.get('/tasks/calendar/:id', tasksRouter.calendar);
+app.get('/tasks/calendar/events/:id', tasksRouter.returnEvents);
 
 
 app.listen(config.get('port'), function(){
