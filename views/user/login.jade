@@ -2,27 +2,28 @@
    Created by LDV on 03/04/14.
 
 extends ../layout
+
 block content
-    div(class="col-lg-6")
+
+    div(class="row")
         div(class="well bs-component")
             form(name='form', class='form-horizontal', method='post', action='/login', enctype='multipart/form-data')
+                legend Login Form
                 fieldset
-                    legend Login Please
-
                     div(class="form-group")
                         label(for='username', class="col-lg-2 control-label") User Name:
-                    div(class="col-lg-10")
-                        input(type='text', class="form-control", id='username', name='username', placeholder="Registered User Name")
+                        div(class="col-lg-10")
+                            input(type='text', class="form-control", id='username', name='username', placeholder="Registered User Name")
 
                     div(class="form-group")
                         label(for='password', class="col-lg-2 control-label") Password:
-                    div(class="col-lg-10")
-                        input(type='text', class="form-control", id='password', name='password', placeholder="Registered Password")
+                        div(class="col-lg-10")
+                            input(type='text', class="form-control", id='password', name='password', placeholder="Your Password")
+                    div(class="checkbox")
 
-
-                    div(class="modal-footer")
-                        input(type='submit', class="btn btn-primary", value='Log In')
-
+                    div(class="form-group")
+                        div(class="col-lg-10 col-lg-offset-2")
+                            button(class="btn btn-primary") Log In
 
     div(class="col-lg-6")
         a(href="/auth/facebook") Login with Facebook

@@ -5,29 +5,22 @@ extends ../layout
 
 block content
 
-    h3 Creating Task for project #{project.name}
-
-    div(class="col-lg-6")
+    div(class="row")
         div(class="well bs-component")
             form(name='form', class='form-horizontal', method='post', action='/tasks/create', enctype='multipart/form-data')
-
+                legend Creating Task for project: #{project.name}
                 fieldset
-
-                    legend Legend
-
                     div(class="form-group")
                         label(for='Name', class="col-lg-2 control-label") Name
-
                         div(class="col-lg-10")
                             input(type='text', class="form-control", id='name', name='name', placeholder="SomeText")
-
                     div(class="form-group")
-                    label(for='spendTime', class="col-lg-2 control-label") Spend Houers
-
+                        label(for='spendTime', class="col-lg-2 control-label") Spend Houers
                         div(class="col-lg-10")
                             input(type='number', class="form-control" id='spendTime', name='spendTime', placeholder="Spend Time in hours")
 
                     input(type='hidden', id='projectID', name='projectID', value='#{project._id}')
 
-                    div(class="modal-footer")
-                        input(type='submit', class="btn btn-primary", value='Create Task')
+                    div(class="form-group")
+                        div(class="col-lg-10 col-lg-offset-2")
+                            button(class="btn btn-primary") Create Task

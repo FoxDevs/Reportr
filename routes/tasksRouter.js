@@ -105,12 +105,12 @@ exports.delete = function(req, res) {
             if (task) {
 
                 ProjectModel.findByIdAndUpdate(task.projectID, {$inc: {spendTime:-task.spendTime}}, function (err, updatedProject) {
-                    if (err) return console.log(err);
+                    if (err) return console.log("MyError: " + err);
 
                     task.remove(function (err) {
+                        if (err) return console.log("MyError: " + err);
 
-                        res.redirect('projects/details');
-
+                        res.redirect('projects/details/' + updatedProject._id);
                     });
                 });
             } else {

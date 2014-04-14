@@ -48,26 +48,24 @@ app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { successRedirect: '/successful',
                                         failureRedirect: '/unsuccessful' }));
 
-app.get('/projects', projectsRouter.list);
-
-app.get('/projects',             ensureAuthenticated, projectsRouter.list);
-app.get('/projects/list',        ensureAuthenticated, projectsRouter.list);
-app.get('/projects/create',      ensureAuthenticated, projectsRouter.create);
+app.get ('/projects',             ensureAuthenticated, projectsRouter.list);
+app.get ('/projects/',            ensureAuthenticated, projectsRouter.list);
+app.get ('/projects/list',        ensureAuthenticated, projectsRouter.list);
+app.get ('/projects/create',      ensureAuthenticated, projectsRouter.create);
 app.post('/projects/create',     ensureAuthenticated, projectsRouter.createProject);
-app.get('/projects/details/:id', ensureAuthenticated, projectsRouter.details);
-app.get('/projects/delete/:id',  ensureAuthenticated, projectsRouter.delete);
+app.get ('/projects/details/:id', ensureAuthenticated, projectsRouter.details);
+app.get ('/projects/delete/:id',  ensureAuthenticated, projectsRouter.delete);
 
-app.get('/tasks',            ensureAuthenticated, tasksRouter.list);
-app.get('/tasks/',           ensureAuthenticated, tasksRouter.list);
-app.get('/tasks/list/:id',   ensureAuthenticated, tasksRouter.list);
-app.get('/tasks/create/:id', ensureAuthenticated, tasksRouter.create);
+app.get ('/tasks',            ensureAuthenticated, tasksRouter.list);
+app.get ('/tasks/',           ensureAuthenticated, tasksRouter.list);
+app.get ('/tasks/list/:id',   ensureAuthenticated, tasksRouter.list);
+app.get ('/tasks/create/:id', ensureAuthenticated, tasksRouter.create);
 app.post('/tasks/create',    ensureAuthenticated, tasksRouter.createTask);
-app.get('/tasks/delete/:id', ensureAuthenticated, tasksRouter.delete);
-app.get('/tasks/edit/:id', tasksRouter.edit);
-app.post('/tasks/edit', tasksRouter.editTask);
-
-app.get('/tasks/calendar/:id', tasksRouter.calendar);
-app.get('/tasks/calendar/events/:id', tasksRouter.returnEvents);
+app.get ('/tasks/delete/:id', ensureAuthenticated, tasksRouter.delete);
+app.get ('/tasks/edit/:id',   ensureAuthenticated, tasksRouter.edit);
+app.post('/tasks/edit',      ensureAuthenticated, tasksRouter.editTask);
+app.get ('/tasks/calendar/:id',        ensureAuthenticated, tasksRouter.calendar);
+app.get ('/tasks/calendar/events/:id', ensureAuthenticated, tasksRouter.returnEvents);
 
 
 app.listen(config.get('port'), function(){
