@@ -1,7 +1,14 @@
 extends ../layout
 
 block content
-    h1 Projects list
+
+    - if (currentUser && currentUser.admin) {
+    div(class="bs-docs-section")
+        div(class="row")
+            a(href='/admin/menu') Admin Menu
+    - }
+
+    h1 My Projects list
 
     -if (projects) {
 
@@ -13,7 +20,7 @@ block content
                             thead
                                 tr
                                     th Projec Name
-                                    th Spend Time
+                                    th Total Spend Time
                             tbody
                                 each project in projects
                                     -var spendTime = project.spendTime;

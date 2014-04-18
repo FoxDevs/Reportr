@@ -9,5 +9,6 @@ exports.UserSchema = mongoose.Schema({
     name:        String,
     password:    String,
     projectIDs:  Array,
+    admin:       Boolean,
     description: String
 });

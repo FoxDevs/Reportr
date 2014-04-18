@@ -479,7 +479,6 @@ describe('Task CRUD', function()
 
                                                 should.exist(projectInitialSpendTime);
 
-                                                console.log("MyLog: " + projectInitialSpendTime.spendTime);
                                                 projectInitialSpendTime.spendTime.should.eql(initialTaskSpendTime);
 
 

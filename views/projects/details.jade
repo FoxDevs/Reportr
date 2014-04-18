@@ -4,53 +4,50 @@
 extends ../layout
 
 block content
-
     div(class="bs-docs-section")
+        div(class="row")
 
-        div(class="bs-docs-section")
+            div(class="page-header")
+                h2(id="nav") Project Details
+
+        div(class="row")
+                p(class="bs-component")
+                    button(type="button", style="display: inline-block", class="btn btn-info", id="projects_list_button") Projects List
+                    button(type="button", style="display: inline-block", class="btn btn-primary", id="create_new_task_button") Create New Task
+                    button(type="button", style="display: inline-block", class="btn btn-danger", id="delete_project_button") Delete Project
+                    button(type="button", style="display: inline-block", class="btn btn-warning", id="calendar_button") Calendar
+
+                    //form(action='/projects/delete/#{project._id}', method="delete")
+                    //   input(type="submit", class="btn btn-danger", value='Delete Project')
+                    //
+                    //form(action='/tasks/create/#{project._id}', method="get")
+                    //   input(type="submit", class="btn btn-primary", value='Create Task')
+
             div(class="row")
 
-                div(class="page-header")
-                    h2(id="nav") Project Details
+                h3 Tasks list of #{project.name}
+                if ( (tasks) && (tasks.length > 0) )
 
-            div(class="row")
-                    p(class="bs-component")
-                        button(type="button", style="display: inline-block", class="btn btn-info", id="projects_list_button") Projects List
-                        button(type="button", style="display: inline-block", class="btn btn-primary", id="create_new_task_button") Create New Task
-                        button(type="button", style="display: inline-block", class="btn btn-danger", id="delete_project_button") Delete Project
-                        button(type="button", style="display: inline-block", class="btn btn-warning", id="calendar_button") Calendar
-
-                        //form(action='/projects/delete/#{project._id}', method="delete")
-                        //   input(type="submit", class="btn btn-danger", value='Delete Project')
-                        //
-                        //form(action='/tasks/create/#{project._id}', method="get")
-                        //   input(type="submit", class="btn btn-primary", value='Create Task')
-
-                div(class="row")
-
-                    h3 Tasks list of #{project.name}
-                    if ( (tasks) && (tasks.length > 0) )
-
-                        div(class="bs-component")
-                            table(class="table table-striped table-hover ")
-                                thead
+                    div(class="bs-component")
+                        table(class="table table-striped table-hover ")
+                            thead
+                                tr
+                                    th Task
+                                    th Spend Time
+                                    th Options
+                            tbody
+                                each task in tasks
                                     tr
-                                        th Task
-                                        th Spend Time
-                                        th Options
-                                tbody
-                                    each task in tasks
-                                        tr
-                                            td
-                                                a(href='/tasks/edit/#{task._id}') #{task.name}
-                                            td= task.spendTime + 'h'
-                                            td
-                                                p
-                                                    a(href='/tasks/delete/#{task._id}') Delete |
-                                                    a(href='/tasks/edit/#{task._id}')  Edit
+                                        td
+                                            a(href='/tasks/edit/#{task._id}') #{task.name}
+                                        td= task.spendTime + 'h'
+                                        td
+                                            p
+                                                a(href='/tasks/delete/#{task._id}') Delete |
+                                                a(href='/tasks/edit/#{task._id}')  Edit
 
-                    else
-                        h2 Dont have tasks
+                else
+                    h2 Dont have tasks
 
 
     script(type="text/javascript").

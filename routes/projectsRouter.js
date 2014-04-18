@@ -10,7 +10,10 @@ exports.list = function(request, response)
     return ProjectModel.find({_id: {$in:request.user.projectIDs} }, function (err, projects)
     {
         if (!err) {
-            return response.render('projects/list', {projects: projects});
+
+            var currentUser = request.user;
+
+            return response.render('projects/list', {currentUser: currentUser, projects: projects});
         } else {
 
             console.log('Need to work it out!');
@@ -19,6 +22,21 @@ exports.list = function(request, response)
         }
     });
 };
+
+
+exports.all = function(request, response)
+{
+    return ProjectModel.find( function(err, allProjects)
+    {
+        if (!err) {
+            return response.render('projects/all', {allProjects: allProjects});
+        } else {
+            console.log('Need to work it out! exports.all');
+            return response.send({ error: 'Server error' });
+        }
+    });
+};
+
 
 exports.create = function(request, response)
 {
